@@ -4,8 +4,8 @@ import { GeistMono } from 'geist/font/mono';
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Himachal Health",
-  description: "Himachal Health Products and Services",
+  title: "Himachal Health and Hygiene Traders",
+  description: "Himachal Health and Hygiene Traders",
 };
 
 export default function RootLayout({
