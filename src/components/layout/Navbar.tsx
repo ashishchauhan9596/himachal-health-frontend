@@ -6,9 +6,11 @@ import Image from 'next/image';
 import { Menu } from '@headlessui/react';
 import { Search, Phone, Menu as MenuIcon, ChevronDown, MessageSquare, User } from 'lucide-react';
 import { categories } from '@/data/products';
+import PhoneNumbersModal from '../PhoneNumbersModal';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
   return (
     <div className="bg-white shadow-sm">
@@ -52,14 +54,14 @@ export default function Navbar() {
                 <MessageSquare className="h-5 w-5 mr-1" />
                 <span>Send Inquiry</span>
               </Link>
-              
-              <Link
-                href="tel:+919216785124"
+              <button
+                type="button"
+                onClick={() => setShowPhoneModal(true)}
                 className="flex items-center text-gray-700 hover:text-green-700"
               >
                 <Phone className="h-5 w-5 mr-1" />
                 <span>Call Now</span>
-              </Link>
+              </button>
             </div>
 
             {/* Mobile menu button */}
@@ -160,6 +162,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+      <PhoneNumbersModal open={showPhoneModal} onClose={() => setShowPhoneModal(false)} color="green" />
     </div>
   );
 } 

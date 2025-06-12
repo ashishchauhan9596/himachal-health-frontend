@@ -1,7 +1,20 @@
+'use client';
+
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 
 export default function ContactPage() {
+  const phoneNumbers = [
+    '+91 92167 85124',
+    '+91 82628 63454',
+    '+91 86278 20075'
+  ];
+
+  const openGoogleMaps = (address: string) => {
+    const encodedAddress = encodeURIComponent(address);
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
+  };
+
   return (
     <Layout>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -18,9 +31,17 @@ export default function ContactPage() {
                   <Phone className="h-6 w-6 text-blue-800 mr-3 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">Phone Numbers</h3>
-                    <p className="text-gray-600">+91 92167 85124</p>
-                    <p className="text-gray-600">+91 82628 63454</p>
-                    <p className="text-gray-600">+91 86278 20075</p>
+                    <div className="space-y-1">
+                      {phoneNumbers.map((number, index) => (
+                        <a 
+                          key={index}
+                          href={`tel:${number.replace(/\s+/g, '')}`}
+                          className="block text-gray-600 hover:text-blue-800 transition-colors"
+                        >
+                          {number}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
@@ -28,7 +49,12 @@ export default function ContactPage() {
                   <Mail className="h-6 w-6 text-blue-800 mr-3 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">Email</h3>
-                    <p className="text-gray-600">hhh.traders@gmail.com</p>
+                    <a 
+                      href="mailto:hhh.traders@gmail.com"
+                      className="text-gray-600 hover:text-blue-800 transition-colors"
+                    >
+                      hhh.traders@gmail.com
+                    </a>
                   </div>
                 </div>
 
@@ -36,10 +62,16 @@ export default function ContactPage() {
                   <MapPin className="h-6 w-6 text-blue-800 mr-3 mt-1" />
                   <div>
                     <h3 className="font-medium text-gray-900 mb-1">Locations</h3>
-                    <p className="text-gray-600 mb-3">
+                    <p 
+                      className="text-gray-600 mb-3 cursor-pointer hover:text-blue-800 transition-colors"
+                      onClick={() => openGoogleMaps("Plot No.2, Om Sai Complex, Sai Road, Baddi, Distt. Solan, H.P. 173205")}
+                    >
                       Plot No.2, Om Sai Complex, Sai Road, Baddi, Distt. Solan, H.P. 173205
                     </p>
-                    <p className="text-gray-600">
+                    <p 
+                      className="text-gray-600 cursor-pointer hover:text-blue-800 transition-colors"
+                      onClick={() => openGoogleMaps("Vill. Rangri, Opp. H.P Petrol Pump, Manali, Distt. Kullu, H.P. 175131")}
+                    >
                       Vill. Rangri, Opp. H.P Petrol Pump, Manali, Distt. Kullu, H.P. 175131
                     </p>
                   </div>

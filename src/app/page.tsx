@@ -1,3 +1,5 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
 import { MessageSquare, Phone, MapPin, ChevronRight } from 'lucide-react';
@@ -6,8 +8,11 @@ import CategoryCard from '@/components/category/CategoryCard';
 import ProductCard from '@/components/product/ProductCard';
 import BrandsCarousel from '@/components/brands/BrandsCarousel';
 import { categories, products, brands } from '@/data/products';
+import { useState } from 'react';
+import PhoneNumbersModal from '@/components/PhoneNumbersModal';
 
 export default function Home() {
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
   return (
     <Layout>
       {/* Hero Section */}
@@ -23,27 +28,26 @@ export default function Home() {
               <p className="text-xl text-gray-200 mb-8">
                 Your trusted partner for industrial cleaning and hygiene solutions
               </p>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  <span>Baddi & Manali, Himachal Pradesh</span>
-                </div>
-                <div className="flex items-center space-x-4">
-                  <Link
-                    href="/contact"
-                    className="bg-white text-green-900 px-6 py-3 rounded-md font-semibold hover:bg-green-50 flex items-center"
-                  >
-                    <MessageSquare className="h-5 w-5 mr-2" />
-                    Send Inquiry
-                  </Link>
-                  <Link
-                    href="tel:+919216785124"
-                    className="bg-green-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 flex items-center"
-                  >
-                    <Phone className="h-5 w-5 mr-2" />
-                    Call Now
-                  </Link>
-                </div>
+              <div className="flex items-center mb-4">
+                <MapPin className="h-5 w-5 mr-2" />
+                <span>Baddi & Manali, Himachal Pradesh</span>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Link
+                  href="/contact"
+                  className="bg-white text-green-900 px-6 py-3 rounded-md font-semibold hover:bg-green-50 flex items-center"
+                >
+                  <MessageSquare className="h-5 w-5 mr-2" />
+                  Send Inquiry
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => setShowPhoneModal(true)}
+                  className="bg-green-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-green-700 flex items-center"
+                >
+                  <Phone className="h-5 w-5 mr-2" />
+                  Call Now
+                </button>
               </div>
             </div>
             <div className="hidden lg:block">
@@ -243,6 +247,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <PhoneNumbersModal open={showPhoneModal} onClose={() => setShowPhoneModal(false)} color="green" />
     </Layout>
   );
 }

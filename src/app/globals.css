@@ -30,3 +30,10 @@ body {
 .font-mono {
   font-family: var(--font-mono);
 }
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  color: #17823a;
+}

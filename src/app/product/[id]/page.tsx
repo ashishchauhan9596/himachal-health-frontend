@@ -1,6 +1,10 @@
+'use client';
+
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Phone, Send, MessageCircle, CheckCircle2 } from 'lucide-react';
+import { Phone, Send, MessageCircle, CheckCircle2, X } from 'lucide-react';
+import { useState } from 'react';
 import Layout from '@/components/layout/Layout';
 import { products } from '@/data/products';
 
@@ -11,6 +15,13 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+  const [showModal, setShowModal] = useState(false);
+  const phoneNumbers = [
+    '+91 92167 85124',
+    '+91 82628 63454',
+    '+91 86278 20075'
+  ];
+
   const product = products.find((p) => p.id === params.id);
 
   if (!product) {
@@ -51,18 +62,29 @@ export default function ProductPage({ params }: ProductPageProps) {
 
             {/* Contact Buttons */}
             <div className="space-y-4 mb-8">
-              <button className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white rounded-md hover:bg-blue-900">
+              <Link 
+                href="/contact"
+                className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white rounded-md hover:bg-blue-900"
+              >
                 <Send className="h-5 w-5 mr-2" />
                 Send Inquiry
-              </button>
-              <button className="w-full flex items-center justify-center px-6 py-3 border border-blue-800 text-blue-800 rounded-md hover:bg-blue-50">
+              </Link>
+              <button 
+                onClick={() => setShowModal(true)}
+                className="w-full flex items-center justify-center px-6 py-3 border border-blue-800 text-blue-800 rounded-md hover:bg-blue-50"
+              >
                 <Phone className="h-5 w-5 mr-2" />
                 Call Supplier
               </button>
-              <button className="w-full flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700">
+              <Link 
+                href="https://wa.me/919216785124"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700"
+              >
                 <MessageCircle className="h-5 w-5 mr-2" />
                 WhatsApp
-              </button>
+              </Link>
             </div>
 
             {/* Product Details */}
@@ -83,6 +105,34 @@ export default function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </div>
+
+      {/* Phone Numbers Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Contact Numbers</h3>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              {phoneNumbers.map((number, index) => (
+                <Link
+                  key={index}
+                  href={`tel:${number.replace(/\s+/g, '')}`}
+                  className="block w-full text-center py-3 px-4 bg-blue-800 text-white rounded-lg hover:bg-blue-900 transition-colors"
+                >
+                  {number}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </Layout>
   );
 } 
