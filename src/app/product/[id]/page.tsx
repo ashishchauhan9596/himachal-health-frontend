@@ -17,8 +17,8 @@ interface ProductPageProps {
 export default function ProductPage({ params }: ProductPageProps) {
   const [showModal, setShowModal] = useState(false);
   const phoneNumbers = [
-    '+91 92167 85124',
     '+91 82628 63454',
+    '+91 92167 85124',
     '+91 86278 20075'
   ];
 
@@ -77,7 +77,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 Call Supplier
               </button>
               <Link 
-                href="https://wa.me/919216785124"
+                href={`https://wa.me/${phoneNumbers[0].replace(/\s+/g, '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700"
