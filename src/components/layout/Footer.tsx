@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { openGoogleMaps } from '@/utils/maps';
 
 export default function Footer() {
   const phoneNumbers = [
@@ -9,11 +10,6 @@ export default function Footer() {
     '+91 82628 63454',
     '+91 86278 20075'
   ];
-
-  const openGoogleMaps = (address: string) => {
-    const encodedAddress = encodeURIComponent(address);
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
-  };
 
   return (
     <footer className="bg-gray-900 text-gray-300">

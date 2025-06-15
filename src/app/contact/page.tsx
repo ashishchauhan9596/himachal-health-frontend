@@ -2,18 +2,62 @@
 
 import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
+import { openGoogleMaps } from '@/utils/maps';
+import { useState } from 'react';
+import { sendEmail } from '@/utils/email';
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    message: ''
+  });
+  const [status, setStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ type: null, message: '' });
+
+    try {
+      const result = await sendEmail(formData);
+      if (result.success) {
+        setStatus({
+          type: 'success',
+          message: 'Your message has been sent successfully! We will get back to you soon.'
+        });
+        setFormData({ name: '', email: '', phone: '', message: '' });
+      } else {
+        setStatus({
+          type: 'error',
+          message: result.error || 'Failed to send message. Please try again.'
+        });
+      }
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message: 'An error occurred. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
   const phoneNumbers = [
     '+91 92167 85124',
     '+91 82628 63454',
     '+91 86278 20075'
   ];
-
-  const openGoogleMaps = (address: string) => {
-    const encodedAddress = encodeURIComponent(address);
-    window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
-  };
 
   return (
     <Layout>
@@ -81,15 +125,21 @@ export default function ContactPage() {
 
             {/* Map Embeds */}
             <div className="space-y-4">
-              <div className="aspect-video rounded-lg overflow-hidden">
+              <div className="aspect-video rounded-lg overflow-hidden shadow-lg border border-gray-200">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13639.060104032149!2d76.78!3d31.59!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390572900000000f%3A0x7b23a0a87aebd453!2sBaddi%2C%20Himachal%20Pradesh!5e0!3m2!1sen!2sin!4v1616661688065!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d709.1978915639534!2d76.81246595246813!3d30.95179272890013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDU3JzA2LjYiTiA3NsKwNDgnNDguMCJF!5e0!3m2!1sen!2sin!4v1749983878671!5m2!1sen!2sin"
                   width="100%"
-                  height="100%"
+                  height="180"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="HHH Traders Location"
+                  className="w-full h-[480px] rounded-lg shadow-lg border border-gray-200"
                 ></iframe>
+              </div>
+              <div className="text-center text-sm text-gray-600">
+                <p>Click on the map to view in full screen</p>
               </div>
             </div>
           </div>
@@ -98,7 +148,14 @@ export default function ContactPage() {
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Send us a Message</h2>
             
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {status.type && (
+                <div className={`p-4 rounded-md ${
+                  status.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
+                }`}>
+                  {status.message}
+                </div>
+              )}
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
                   Your Name
@@ -106,6 +163,10 @@ export default function ContactPage() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your name"
                 />
@@ -118,6 +179,10 @@ export default function ContactPage() {
                 <input
                   type="email"
                   id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your email"
                 />
@@ -130,6 +195,10 @@ export default function ContactPage() {
                 <input
                   type="tel"
                   id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your phone number"
                 />
@@ -141,6 +210,10 @@ export default function ContactPage() {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   rows={4}
                   className="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your message"
@@ -149,10 +222,11 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white rounded-md hover:bg-blue-900"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center px-6 py-3 bg-blue-800 text-white rounded-md hover:bg-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="h-5 w-5 mr-2" />
-                Send Message
+                {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
             </form>
           </div>
