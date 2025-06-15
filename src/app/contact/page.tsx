@@ -125,17 +125,17 @@ export default function ContactPage() {
 
             {/* Map Embeds */}
             <div className="space-y-4">
-              <div className="aspect-video rounded-lg overflow-hidden shadow-lg border border-gray-200">
+              <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg border border-gray-200">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d709.1978915639534!2d76.81246595246813!3d30.95179272890013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDU3JzA2LjYiTiA3NsKwNDgnNDguMCJF!5e0!3m2!1sen!2sin!4v1749983878671!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d709.1978915639534!2d76.81246595246813!3d30.95179272890013!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMzDCsDU3JzA2LjYiTiA3NsKwNDgnNDguMCJF!5e0!3m2!1sen!2sin!4v1749983878671!5m2!1sen!2sin&zoom=15&maptype=roadmap&controls=zoom"
                   width="100%"
-                  height="180"
+                  height="300"
                   style={{ border: 0 }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="HHH Traders Location"
-                  className="w-full h-[480px] rounded-lg shadow-lg border border-gray-200"
+                  className="w-full h-full rounded-lg"
                 ></iframe>
               </div>
               <div className="text-center text-sm text-gray-600">
